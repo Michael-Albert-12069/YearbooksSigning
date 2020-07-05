@@ -74,7 +74,7 @@
     function generatePostLoginLink(){
         var url = new URL(window.location);
         var host = url.searchParams.get("host");
-        return "message_conf.html?host=" + host;
+        return "/YearbooksSigning/message_conf.html?host=" + host;
     }
         console.log(generatePostLoginLink());
         // FirebaseUI config.
@@ -93,10 +93,10 @@
           // tosUrl and privacyPolicyUrl accept either url string or a callback
           // function.
           // Terms of service url/callback.
-          tosUrl: '/auth-req/tos.html',
+          tosUrl: '/YearbooksSigning/auth-req/tos.html',
           // Privacy policy url/callback.
           privacyPolicyUrl: function() {
-            window.location.assign('/auth-req/pp.html');
+            window.location.assign('/YearbooksSigning/auth-req/pp.html');
           }
         };
   
