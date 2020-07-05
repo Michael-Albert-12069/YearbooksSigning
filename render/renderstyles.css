@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'scrawl';
+    src: url('fonts/scrawl.woff');
+}
+h3{
+    color: black;
+}
+.sans{
+    font-family: sans-serif;
+}
+.mono{
+    font-family: monospace;
+}
+
+.scrawl{
+    font-family: 'scrawl', sans-serif;
+}
+.serif{
+    font-family: serif;
+}

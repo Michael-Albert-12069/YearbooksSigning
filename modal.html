@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>signin testhtml</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+
+
+      <!-- insert firebase JS dependency nightmare -->
+
+    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+  
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+  
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+  
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+      <script>
+        // Firebase project configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyBeBJKFqfcsZS6WfJIRfAH_D6qZOsBAxh0",
+          authDomain: "signr-1ab26.firebaseapp.com",
+          databaseURL: "https://signr-1ab26.firebaseio.com",
+          projectId: "signr-1ab26",
+          storageBucket: "signr-1ab26.appspot.com",
+          messagingSenderId: "228825433332",
+          appId: "1:228825433332:web:0f1b1e68df238130240aa1",
+          measurementId: "G-PKGWK74L07"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+  
+        // writeNewPost("michaelAlbert", "samHuseman", "stay in school","","","");
+
+        // function writeNewPost(uid, username, body) {
+        //   // A post entry.
+        //   var postData = {
+        //     author: username,
+        //     host: uid,
+        //     message: body
+        //   };
+
+        //   // Get a key for a new Post.
+        //   var newPostKey = firebase.database().ref().child('posts').push().key;
+
+        //   // Write the new post's data simultaneously in the posts list and the user's post list.
+        //   var updates = {};
+        //   updates['/posts/' + newPostKey] = postData;
+        //   updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+
+        //   return firebase.database().ref().update(updates);
+        // }
+
+
+      </script>
+
+    <script src="https://www.gstatic.com/firebasejs/ui/4.5.1/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.5.1/firebase-ui-auth.css" />
+    <script type="text/javascript">
+    function generatePostLoginLink(){
+        var url = new URL(window.location);
+        var host = url.searchParams.get("host");
+        return "message_conf.html?host=" + host;
+    }
+        console.log(generatePostLoginLink());
+        // FirebaseUI config.
+        var uiConfig = {
+          signInSuccessUrl: generatePostLoginLink(),
+          signInOptions: [
+            // Leave the lines as is for the providers you want to offer your users.
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+            // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+            // firebase.auth.GithubAuthProvider.PROVIDER_ID,
+            // firebase.auth.EmailAuthProvider.PROVIDER_ID,
+            // firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+            // firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
+          ],
+          // tosUrl and privacyPolicyUrl accept either url string or a callback
+          // function.
+          // Terms of service url/callback.
+          tosUrl: '/auth-req/tos.html',
+          // Privacy policy url/callback.
+          privacyPolicyUrl: function() {
+            window.location.assign('/auth-req/pp.html');
+          }
+        };
+  
+        // Initialize the FirebaseUI Widget using Firebase.
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        // The start method will wait until the DOM is loaded.
+        ui.start('#firebaseui-auth-container', uiConfig);
+    </script>
+    <script type="text/javascript">
+        initApp = function() {
+          firebase.auth().onAuthStateChanged(function(user) {
+      
+            if (user) {
+              // User is signed in.
+              var displayName = user.displayName;
+              var email = user.email;
+              var emailVerified = user.emailVerified;
+              var photoURL = user.photoURL;
+              var uid = user.uid;
+              var phoneNumber = user.phoneNumber;
+              var providerData = user.providerData;
+              
+              acct = {
+                  displayName: displayName,
+                  email: email,
+                  emailVerified: emailVerified,
+                  phoneNumber: phoneNumber,
+                  photoURL: photoURL,
+                  uid: uid,
+                  providerData: providerData
+              }
+              // console.log(JSON.stringify(acct));
+              console.log("user signed in");
+              
+              window.location = generatePostLoginLink();
+              function generatePostLoginLink(){
+                    var url = new URL(window.location);
+                    var host = url.searchParams.get("host");
+                    return "message_conf.html?host=" + host;
+                }
+              user.getIdToken().then(function(accessToken) {
+                // document.getElementById('sign-in-status').textContent = 'Signed in';
+                // document.getElementById('sign-in').textContent = 'Sign out';
+                // document.getElementById('account-details').textContent = JSON.stringify({
+                //   displayName: displayName,
+                //   email: email,
+                //   emailVerified: emailVerified,
+                //   phoneNumber: phoneNumber,
+                //   photoURL: photoURL,
+                //   uid: uid,
+                //   accessToken: accessToken,
+                //   providerData: providerData
+                // }, null, '  ');
+              });
+            } else {
+              // User is signed out.
+              // document.getElementById('sign-in-status').textContent = 'Signed out';
+              // document.getElementById('sign-in').textContent = 'Sign in';
+              window.location = "index.html";
+              // document.getElementById('account-details').textContent = 'null';
+            }
+          }, function(error) {
+            console.log(error);
+          });
+        };
+      
+        window.addEventListener('load', function() {
+          initApp();
+        });
+      </script>
+</head>
+<body>
+  <!-- Modal -->
+  <div class="modal-dialog">
+    
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+        <h4 class="modal-title">Sign in</h4>
+    </div>
+    <div class="modal-body">
+        <div id="firebaseui-auth-container"></div>      
+    </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+      </div>
+    </div>
+    
+  </div>
+</body>
+</html>

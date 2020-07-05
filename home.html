@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <!-- insert firebase JS dependency nightmare -->
+
+    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+  
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+  
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+  
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+    <script>
+      var acct;
+      var user;
+      // Firebase project configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyATqAI_-TUtqTVqVc7U1MNdtnHAB1IVqBI",
+        authDomain: "yearbook-signer.firebaseapp.com",
+        databaseURL: "https://yearbook-signer.firebaseio.com",
+        projectId: "yearbook-signer",
+        storageBucket: "yearbook-signer.appspot.com",
+        messagingSenderId: "724791059724",
+        appId: "1:724791059724:web:08de1ffb3712e76b895529",
+        measurementId: "G-1P30K02TXP"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+
+    </script>
+
+
+<script type="text/javascript">
+  initApp = function() {
+    firebase.auth().onAuthStateChanged(function(user) {
+
+      if (user) {
+        // User is signed in.
+        var displayName = user.displayName;
+        var email = user.email;
+        var emailVerified = user.emailVerified;
+        var photoURL = user.photoURL;
+        var uid = user.uid;
+        var phoneNumber = user.phoneNumber;
+        var providerData = user.providerData;
+        
+        acct = {
+            displayName: displayName,
+            email: email,
+            emailVerified: emailVerified,
+            phoneNumber: phoneNumber,
+            photoURL: photoURL,
+            uid: uid,
+            providerData: providerData
+        }
+        // console.log(JSON.stringify(acct));
+        genKey();
+        document.getElementById("welcome-banner").innerHTML += acct.displayName;
+
+
+        user.getIdToken().then(function(accessToken) {
+          // document.getElementById('sign-in-status').textContent = 'Signed in';
+          // document.getElementById('sign-in').textContent = 'Sign out';
+          // document.getElementById('account-details').textContent = JSON.stringify({
+          //   displayName: displayName,
+          //   email: email,
+          //   emailVerified: emailVerified,
+          //   phoneNumber: phoneNumber,
+          //   photoURL: photoURL,
+          //   uid: uid,
+          //   accessToken: accessToken,
+          //   providerData: providerData
+          // }, null, '  ');
+        });
+      } else {
+        // User is signed out.
+        // document.getElementById('sign-in-status').textContent = 'Signed out';
+        // document.getElementById('sign-in').textContent = 'Sign in';
+        window.location = "index.html";
+        // document.getElementById('account-details').textContent = 'null';
+      }
+    }, function(error) {
+      console.log(error);
+    });
+  };
+
+  window.addEventListener('load', function() {
+    initApp();
+  });
+</script>
+
+<script>
+  function signout(){
+    firebase.auth().signOut().then(function() {
+      console.log('Signed Out');
+      window.alert("Goodbye, come again soon!");
+      window.location = "index.html";
+    }, function(error) {
+      console.error('Sign Out Error', error);
+      window.alert("Error signing out!" + error);
+    });
+  }
+</script>
+
+<link type="text/css" rel="stylesheet" href="styles/ui.css" />
+<link type="text/css" rel="stylesheet" href="styles/navbar.css" />
+
+<title>Home</title>
+</head>
+<body onload="">
+    <!-- <button onclick="signout()" class="error">Sign out</button> -->
+    <ul class="navbar">
+      <li><a class="active left" href=home.html">Home</a></li>
+      <li><a href="message_view.html" class="left">Inbox</a></li>
+      <li class="right"><a onclick="signout()">Sign out</a></li>
+    </ul>
+    <div style = "widows: 100%; height: 10px; margin: 5px;"></div>
+
+    <div class="centerer">
+      <h1 id="welcome-banner">Welcome, </h1>
+    </div>
+
+    <div class="centerer">
+      <h2>Your Custom Link</h2>
+      <p><i>"Go share it with your friends!"</i></p>
+
+      <!-- <button onclick="genKey()" class="neutral">Generate</button> -->
+      <button onclick="copyTextFrom('host_code')" class="neutral">Copy Link</button>
+      <input type="text" id="host_code"  value="" style="width: 60%; color: #444" readonly>
+      <script>
+        console.log(acct);
+        function genKey(){
+            // var link = (window.location).replace('home.html','message_conf.html?');
+            // link += acct.uid;
+            var window_location = (window.location);
+
+            var link = window_location.href.replace("home.html", "modal.html?") + "host=" + acct.uid;
+
+            console.log(link);
+            document.getElementById('host_code').value = link;
+            console.log(acct.uid);
+        }
+        function copyTextFrom(textID) {
+          /* Get the text field */
+          var copyText = document.getElementById(textID);
+
+          /* Select the text field */
+          copyText.select();
+          copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+          /* Copy the text inside the text field */
+          document.execCommand("copy");
+
+          /* Alert the copied text */
+          alert("Copied!");
+        } 
+      </script>
+  </div>
+  <div style = "widows: 100%; height: 20px; margin: 1px;"></div>
+
+
+  <!-- artifacts of the past, ooooh dinosaurs -->
+    <!-- <div class="centerer">
+        <button onclick="window.location='message_conf.html'" class="nav">Sign</button>
+    </div>
+    <div style = "widows: 100%; height: 10px; margin: 1px;"></div>
+    
+    <div class="centerer">
+      <button onclick="window.location='message_view.html'" class="nav">View Signatures</button>
+    </div> -->
+
+
+
+</body>
+</html>

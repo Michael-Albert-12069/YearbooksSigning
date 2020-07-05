@@ -1,0 +1,53 @@
+
+.navbar {
+    border-radius: 7px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    font-family: sans-serif;
+      font-size: 20px;
+  
+  }
+  
+
+  
+  
+  
+  li  a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  .left  {
+    float: left;
+  }
+
+  .left:hover:not(.active) {
+    background-color: #111;
+  }
+  
+  
+  .right{
+    float: right;
+  /*   ideally there should only be one on the right  */ 
+  }
+  .right a:hover:not(.active) {
+    background-color: #f44336;
+  }
+  
+  .active {
+    background-color: #4b42f5;
+  }
+
+
+  /* here's the sample code for the .navbar
+<ul class="navbar">
+    <li><a class="active left" href="#home">Home</a></li>
+    <li><a href="#news" class="left">Inbox</a></li>
+    <li class="right"><a href="#news">Sign out</a></li>
+</ul> */

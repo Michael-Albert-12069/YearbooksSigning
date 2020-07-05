@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel='stylesheet' type='text/css' href='renderstyles.css'>
+    <title>Render</title>
+</head>
+<body onload="handleURL()">
+    <h1 id="msg"></h1>
+    <h2 id="name"></h2>
+
+
+
+    <script>
+        //yeah I could've used an external script, sue me
+        function handleURL(){
+            var url = new URL(window.location);
+            var font = url.searchParams.get("font");
+            var message = url.searchParams.get("message");
+            var name = url.searchParams.get("name");
+
+            document.getElementById('msg').innerHTML = message;
+            document.getElementById('name').innerHTML = name;
+
+            document.getElementById('msg').className = font;
+            document.getElementById('name').className = font;
+
+
+        }
+    </script>
+</body>
+</html>
